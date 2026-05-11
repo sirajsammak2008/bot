@@ -1,6 +1,6 @@
+import os
 import discord
 
-import os
 TOKEN = os.getenv("TOKEN")
 
 intents = discord.Intents.default()
