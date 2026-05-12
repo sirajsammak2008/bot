@@ -1,7 +1,7 @@
 import os
 import discord
 from keep_alive import keep_alive
-from google import genai
+import google.generativeai as genai
 
 TOKEN = os.getenv("TOKEN")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
