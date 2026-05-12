@@ -1,7 +1,11 @@
 import os
 import discord
 from keep_alive import keep_alive
+
 TOKEN = os.getenv("TOKEN")
+
+if TOKEN is None:
+    raise ValueError("TOKEN not found! حط التوكن في Environment Variables باسم TOKEN")
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -9,16 +13,15 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 
 auto_replies = {
-
     "مرحبا": "يا اهلا وسهلا 👋",
-     "مين عمك": "انت عمي ",
+    "مين عمك": "انت عمي 😎",
     "السلام عليكم": "وعليكم السلام 🌹",
     "هلا": "هلا وغلا 😎",
     "هاي": "هاي 👋",
     "كيفك": "تمام الحمدلله 😁",
     "شو الأخبار": "كلو تمام 🔥",
     "وينك": "موجود 😎",
-    "مين انت": "أنا بوت الديسكورد 🤖",
+    "مين انت": "أنا بوت D4rk S0ciety 🤖",
     "باي": "مع السلامة 👋",
     "تصبح على خير": "وانت من أهله 🌙",
     "صباح الخير": "صباح النور ☀️",
@@ -45,7 +48,7 @@ auto_replies = {
     "flag": "يمكن الفلاق قريب 👀",
     "cyber": "Security Never Sleeps 🔥",
     "discord": "أفضل تطبيق 😎",
-    "هاي مين": "أنا البوت تبع السيرفر 🤖",
+    "هاي مين": "أنا البوت تبع D4rk S0ciety 🤖",
     "مين المطور": "سراج 😎",
     "dark": "D4rk S0ciety 🔥",
     "ctftime": "وقت التحديات 😈",
@@ -102,20 +105,19 @@ auto_replies = {
 
 @client.event
 async def on_ready():
-    print(f"Logged in as {client.user}")
+    print(f"✅ Logged in as {client.user}")
 
 @client.event
 async def on_message(message):
-
-    if message.author == client.user:
+    if message.author.bot:
         return
 
     content = message.content.strip().lower()
 
     for trigger, reply in auto_replies.items():
-
         if content == trigger.lower():
             await message.channel.send(reply)
             break
 
+keep_alive()
 client.run(TOKEN)
