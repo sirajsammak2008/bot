@@ -1,6 +1,7 @@
 import os
 import discord
 from keep_alive import keep_alive
+from google import genai
 
 TOKEN = os.getenv("TOKEN")
 
