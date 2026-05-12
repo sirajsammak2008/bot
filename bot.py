@@ -1,19 +1,18 @@
 import os
 import discord
 from keep_alive import keep_alive
-import google.generativeai as genai
+from groq import Groq
 
 TOKEN = os.getenv("TOKEN")
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 if TOKEN is None:
     raise ValueError("TOKEN not found! حط التوكن في Environment Variables باسم TOKEN")
 
-if GEMINI_API_KEY is None:
-    raise ValueError("GEMINI_API_KEY not found! حط مفتاح Gemini في Environment Variables")
+if GROQ_API_KEY is None:
+    raise ValueError("GROQ_API_KEY not found! حط مفتاح Groq في Environment Variables")
 
-genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel("gemini-2.5-flash")
+groq_client = Groq(api_key=GROQ_API_KEY)
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -47,8 +46,23 @@ async def on_message(message):
 
         async with message.channel.typing():
             try:
-                response = model.generate_content(question)
-                answer = response.text
+                completion = groq_client.chat.completions.create(
+                    model="llama-3.1-8b-instant",
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": "أنت مساعد ذكي داخل سيرفر Discord اسمه D4rk S0ciety مختص بالأمن السيبراني و CTF. جاوب بالعربي بشكل واضح ومختصر."
+                        },
+                        {
+                            "role": "user",
+                            "content": question
+                        }
+                    ],
+                    temperature=0.7,
+                    max_tokens=700
+                )
+
+                answer = completion.choices[0].message.content
 
                 if len(answer) > 1900:
                     answer = answer[:1900] + "\n\n...الرد طويل، اختصرته."
