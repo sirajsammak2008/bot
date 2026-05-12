@@ -47,7 +47,7 @@ async def on_message(message):
         async with message.channel.typing():
             try:
                 response = gemini.models.generate_content(
-                    model="gemini-1.5-flash",
+                   model="gemini-2.0-flash-exp",
                     contents=question
                 )
 
