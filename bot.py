@@ -12,7 +12,9 @@ if TOKEN is None:
 if GEMINI_API_KEY is None:
     raise ValueError("GEMINI_API_KEY not found! حط مفتاح Gemini في Environment Variables")
 
-gemini = genai.Client(api_key=GEMINI_API_KEY)
+genai.configure(api_key=GEMINI_API_KEY)
+
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 intents = discord.Intents.default()
 intents.message_content = True
