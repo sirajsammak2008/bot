@@ -13,7 +13,6 @@ if GEMINI_API_KEY is None:
     raise ValueError("GEMINI_API_KEY not found! حط مفتاح Gemini في Environment Variables")
 
 genai.configure(api_key=GEMINI_API_KEY)
-
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 intents = discord.Intents.default()
@@ -22,9 +21,9 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 
 auto_replies = {
- "ping": "pong 🏓",
-"dark": "D4rk S0ciety 🔥",
-"مين المطور": "سراج 😎",
+    "ping": "pong 🏓",
+    "dark": "D4rk S0ciety 🔥",
+    "مين المطور": "سراج 😎",
     "GR4NTME4WISH!": "kwwsv://zzz.lqvwdjudp.frp/t_242h/"
 }
 
@@ -48,11 +47,7 @@ async def on_message(message):
 
         async with message.channel.typing():
             try:
-                response = gemini.models.generate_content(
-                   model="gemini-2.0-flash-exp",
-                    contents=question
-                )
-
+                response = model.generate_content(question)
                 answer = response.text
 
                 if len(answer) > 1900:
